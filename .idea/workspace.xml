@@ -37,7 +37,7 @@
     <analyzeAfterCompile>true</analyzeAfterCompile>
     <toolWindowToFront>false</toolWindowToFront>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="106" />
     <option name="y" value="23" />
     <option name="width" value="938" />
@@ -53,15 +53,12 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-
       <pane id="ProjectPane">
         <subPane>
-          <expand>
-          </expand>
+          <expand />
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
-
       <pane id="PackagesPane">
         <subPane>
           <select />
@@ -72,6 +69,10 @@
   <component name="PropertiesComponent">
     <property name="ToolWindowMessages.ShowToolbar" value="false" />
     <property name="ToolWindowRun.ShowToolbar" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
   <component name="RunDashboard">
