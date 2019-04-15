@@ -6,47 +6,45 @@
 
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdOut;
-
-import java.util.ArrayList;
 
 public class PointSET {
 
+    private SET<Point2D> pointSet;
+
     // construct empty set of points
     public PointSET() {
-
+        pointSet = new SET<Point2D>();
     }
 
     public boolean isEmpty() {
-        return true;
+        return pointSet.isEmpty();
     }
 
     // number of points in the set
     public int size() {
-        return 0;
+        return pointSet.size();
     }
 
     // add point to the set
     public void insert(Point2D p) {
-
+        pointSet.add(p);
     }
 
     // does set contain p?
     public boolean conatins(Point2D p) {
-        return false;
+        return pointSet.contains(p);
     }
 
     public void draw() {
-        Point2D p1 = new Point2D(0.5, 0.5);
-        Point2D p2 = new Point2D(0.5, 0.75);
-        p1.drawTo(p2);
+        for (Point2D p : pointSet) {
+            p.draw();
+        }
     }
 
     public Iterable<Point2D> range(RectHV rect) {
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
-        points.add(new Point2D(0, 0));
-        return points;
-
+        return pointSet;
     }
 
     public Point2D nearest(Point2D p) {
@@ -56,6 +54,11 @@ public class PointSET {
     public static void main(String[] args) {
         StdOut.println("Hello!");
         PointSET ps = new PointSET();
+        ps.insert(new Point2D(0.1, 0.2));
+        ps.insert(new Point2D(0.2, 0.2));
+        ps.insert(new Point2D(0.3, 0.2));
+        ps.insert(new Point2D(0.4, 0.2));
+        ps.insert(new Point2D(0.5, 0.2));
         ps.draw();
     }
 }
