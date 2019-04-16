@@ -7,6 +7,7 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
+import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 public class PointSET {
@@ -43,8 +44,14 @@ public class PointSET {
         }
     }
 
+    public String toString() {
+        return pointSet.toString();
+    }
+
     public Iterable<Point2D> range(RectHV rect) {
         // copy over every other point to test clients
+
+        StdOut.println(rect.toString());
         SET testPointSet = new SET<Point2D>();
         int i = 0;
         for (Point2D p : pointSet) {
@@ -52,6 +59,8 @@ public class PointSET {
             i++;
         }
         return testPointSet;
+
+
     }
 
     public Point2D nearest(Point2D p) {
@@ -67,6 +76,14 @@ public class PointSET {
         ps.insert(new Point2D(0.3, 0.2));
         ps.insert(new Point2D(0.4, 0.2));
         ps.insert(new Point2D(0.5, 0.2));
+        RectHV searchRect = new RectHV(0.25, 0.15, 0.55, 0.55);
+        ps.range(searchRect);
+        StdDraw.setPenRadius(0.02);
+        StdDraw.setPenColor(StdDraw.RED);
         ps.draw();
+        StdDraw.setPenRadius(0.01);
+        StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
+        searchRect.draw();
+        StdOut.println(ps.toString());
     }
 }
