@@ -44,11 +44,19 @@ public class PointSET {
     }
 
     public Iterable<Point2D> range(RectHV rect) {
-        return pointSet;
+        // copy over every other point to test clients
+        SET testPointSet = new SET<Point2D>();
+        int i = 0;
+        for (Point2D p : pointSet) {
+            if (i % 2 == 0) testPointSet.add(p);
+            i++;
+        }
+        return testPointSet;
     }
 
     public Point2D nearest(Point2D p) {
-        return new Point2D(0, 0);
+        // send point in the middle to test clients
+        return new Point2D(0.5, 0.5);
     }
 
     public static void main(String[] args) {
