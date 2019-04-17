@@ -51,7 +51,7 @@ public class PointSET {
     public Iterable<Point2D> range(RectHV rect) {
         // copy over every other point to test clients
 
-        StdOut.println(rect.toString());
+        // StdOut.println(rect.toString());
         SET testPointSet = new SET<Point2D>();
         int i = 0;
         for (Point2D p : pointSet) {
@@ -68,8 +68,8 @@ public class PointSET {
     public Point2D nearest(Point2D p) {
 
         class Node implements Comparable<Node> {
-            Point2D myCurP;
-            double myDistanceSq;
+            private Point2D myCurP;
+            private double myDistanceSq;
 
             public Node(Point2D curP, double distanceSq) {
                 myCurP = curP;
@@ -93,9 +93,9 @@ public class PointSET {
             Node curNode = new Node(curPointInSet, curPointInSet.distanceSquaredTo(p));
             nearestPointSet.add(curNode);
         }
-        for (Node curNode : nearestPointSet) {
-            curNode.myCurP.toString();
-        }
+        // for (Node curNode : nearestPointSet) {
+        //     curNode.myCurP.toString();
+        // }
         // send point in the middle to test clients
         return nearestPointSet.min().getCurP();
     }
@@ -119,7 +119,7 @@ public class PointSET {
         StdDraw.setPenRadius(0.01);
         StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
         searchRect.draw();
-        StdOut.println(ps.toString());
+        // StdOut.println(ps.toString());
         StdDraw.setPenColor(StdDraw.GREEN);
         for (Point2D insideP : ps.range(searchRect)) {
             insideP.draw();
