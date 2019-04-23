@@ -6,19 +6,20 @@
 
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
 
 public class KdTree {
 
-    private SET<Node> pointNodes;
-    private boolean curOrientation;
+    // private SET<Node> pointNodes;
+    private Node root;
+    private boolean curOrientation = false;
+    private int size = 0;
     // false is horizontal
     // true is vertical
 
-    private static class Node implements Comparable<Node> {
+    private static class Node {
         private Point2D p;
         private RectHV rect;
         private Node lb;
@@ -31,32 +32,27 @@ public class KdTree {
             rt = _rt;
         }
 
-        public int compareTo(Node that) {
-            return p.compareTo(that.p);
-        }
-
     }
 
     // construct empty set of points
     public KdTree() {
-        pointNodes = new SET<Node>();
         curOrientation = false;
-
     }
 
 
     public boolean isEmpty() {
-        return pointNodes.isEmpty();
+        return size() == 0;
     }
 
     // number of points in the set
     public int size() {
-        return pointNodes.size();
+        return size;
     }
 
     // add point to the set
     public void insert(Point2D p) {
         StdOut.println("Flipping");
+        size++;
         curOrientation = !curOrientation;
     }
 
@@ -85,6 +81,8 @@ public class KdTree {
         StdOut.println(tree.isEmpty());
         StdOut.println(tree.size());
         tree.insert(new Point2D(0.5, 0.5));
+        StdOut.println(tree.isEmpty());
+        StdOut.println(tree.size());
 
     }
 }

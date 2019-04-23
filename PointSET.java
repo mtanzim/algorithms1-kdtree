@@ -44,9 +44,9 @@ public class PointSET {
         }
     }
 
-    public String toString() {
+    /*public String toString() {
         return pointSet.toString();
-    }
+    }*/
 
     public Iterable<Point2D> range(RectHV rect) {
         // copy over every other point to test clients
