@@ -14,7 +14,7 @@ public class KdTree {
 
     // private SET<Node> pointNodes;
     private Node root;
-    private boolean curOrientation = false;
+    // private boolean curOrientation = false;
     private int size = 0;
     // false is horizontal
     // true is vertical
@@ -22,21 +22,25 @@ public class KdTree {
     private static class Node {
         private Point2D p;
         private RectHV rect;
+        // false is horizontal
+        // true is vertical
+        private boolean orientation;
         private Node lb;
         private Node rt;
 
-        public Node(Point2D _p, RectHV _rect, Node _lb, Node _rt) {
+        public Node(Point2D _p, boolean _orientation) {
             p = _p;
-            rect = _rect;
-            lb = _lb;
-            rt = _rt;
+            // rect = _rect;
+            orientation = _orientation;
+            // lb = _lb; // left or bottom; < 0
+            // rt = _rt; // right or top; > 0
         }
 
     }
 
     // construct empty set of points
     public KdTree() {
-        curOrientation = false;
+        root = null;
     }
 
 
@@ -49,15 +53,68 @@ public class KdTree {
         return size;
     }
 
-    // add point to the set
-    public void insert(Point2D p) {
-        StdOut.println("Flipping");
-        size++;
-        curOrientation = !curOrientation;
+    private String getOrientation(boolean cond) {
+        if (cond) return "vertical";
+        return "horizontal";
     }
 
+
+    // add point to the set
+    public void insert(Point2D p) {
+        if (p == null) throw new IllegalArgumentException("calls put() with a null key");
+
+        StdOut.println("\n\n*** Inserting " + p.toString() + " ***\n");
+        // root orientation is chosen to be true/vertical
+
+        root = put(root, p, false);
+        // size++;
+        // curOrientation = !curOrientation;
+    }
+
+    private Node put(Node curNode, Point2D p, boolean parentOrientation) {
+        // found where to insert
+        if (curNode == null) {
+            size++;
+            // reverse orientation from parent
+            StdOut.println("\n=== Inserted " + p.toString() + " to tree" + " with orientation "
+                                   + getOrientation(!parentOrientation) + " ===\n");
+            // StdOut.println("Current size " + size);
+
+            return new Node(p, !parentOrientation);
+        }
+        StdOut.println(
+                "Currently at Node with point: " + curNode.p.toString() + " with orientation "
+                        + getOrientation(curNode.orientation));
+        int cmp;
+        // if true/vertical
+        if (curNode.orientation) {
+            cmp = Point2D.X_ORDER.compare(p, curNode.p);
+        }
+        // false/horizontal
+        else {
+            cmp = Point2D.Y_ORDER.compare(p, curNode.p);
+
+        }
+        if (cmp < 0) {
+            if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going left");
+            else StdOut.println("Going bottom");
+            curNode.lb = put(curNode.lb, p, curNode.orientation);
+        }
+        else if (cmp > 0) {
+            // StdOut.println("Going right/top");
+            if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going right");
+            else StdOut.println("Going top");
+            curNode.rt = put(curNode.rt, p, curNode.orientation);
+        }
+        // overwrite previously held value
+        else curNode.p = p;
+
+        return curNode;
+    }
+
+
     // does set contain p?
-    public boolean conatins(Point2D p) {
+    public boolean contains(Point2D p) {
         return false;
     }
 
@@ -78,11 +135,15 @@ public class KdTree {
 
     public static void main(String[] args) {
         KdTree tree = new KdTree();
-        StdOut.println(tree.isEmpty());
-        StdOut.println(tree.size());
+        StdOut.println("START: is it empty: " + tree.isEmpty());
+        StdOut.println("Current size: " + tree.size());
         tree.insert(new Point2D(0.5, 0.5));
-        StdOut.println(tree.isEmpty());
-        StdOut.println(tree.size());
+        tree.insert(new Point2D(0.7, 0.5));
+        tree.insert(new Point2D(0.3, 0.5));
+        tree.insert(new Point2D(0.3, 0.4));
+        tree.insert(new Point2D(0.7, 0.6));
+        StdOut.println("Current size: " + tree.size());
+        StdOut.println("END: is it empty: " + tree.isEmpty());
 
     }
 }

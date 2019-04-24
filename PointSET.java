@@ -34,7 +34,7 @@ public class PointSET {
     }
 
     // does set contain p?
-    public boolean conatins(Point2D p) {
+    public boolean contains(Point2D p) {
         return pointSet.contains(p);
     }
 
