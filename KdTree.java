@@ -59,6 +59,49 @@ public class KdTree {
     }
 
 
+    // does set contain p?
+    public boolean contains(Point2D p) {
+        if (p == null) throw new IllegalArgumentException("argument to contains() is null");
+        return false;
+        // return get(p);
+    }
+
+    /*private boolean get(Point2D p) {
+        return get(root, p) != null;
+    }
+
+    private Node get(Node curNode, Point2D p) {
+        if (curNode == null) return null;
+
+    }*/
+
+    private int getCmp(Node curNode, Point2D p) {
+        int cmp;
+        // if true/vertical
+        if (curNode.orientation) {
+            cmp = Point2D.X_ORDER.compare(p, curNode.p);
+        }
+        // false/horizontal
+        else {
+            cmp = Point2D.Y_ORDER.compare(p, curNode.p);
+
+        }
+        return cmp;
+    }
+
+    private void debugCmp(int cmp, Node curNode) {
+        if (cmp < 0) {
+            if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going left");
+            else StdOut.println("Going bottom");
+        }
+        else if (cmp > 0) {
+            // StdOut.println("Going right/top");
+            if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going right");
+            else StdOut.println("Going top");
+        }
+    }
+
+
     // add point to the set
     public void insert(Point2D p) {
         if (p == null) throw new IllegalArgumentException("calls put() with a null key");
@@ -85,25 +128,20 @@ public class KdTree {
         StdOut.println(
                 "Currently at Node with point: " + curNode.p.toString() + " with orientation "
                         + getOrientation(curNode.orientation));
-        int cmp;
-        // if true/vertical
-        if (curNode.orientation) {
-            cmp = Point2D.X_ORDER.compare(p, curNode.p);
-        }
-        // false/horizontal
-        else {
-            cmp = Point2D.Y_ORDER.compare(p, curNode.p);
 
-        }
+        int cmp = getCmp(curNode, p);
         if (cmp < 0) {
-            if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going left");
-            else StdOut.println("Going bottom");
+            // if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going left");
+            // else StdOut.println("Going bottom");
+            debugCmp(cmp, curNode);
             curNode.lb = put(curNode.lb, p, curNode.orientation);
+
         }
         else if (cmp > 0) {
             // StdOut.println("Going right/top");
-            if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going right");
-            else StdOut.println("Going top");
+            // if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going right");
+            // else StdOut.println("Going top");
+            debugCmp(cmp, curNode);
             curNode.rt = put(curNode.rt, p, curNode.orientation);
         }
         // overwrite previously held value
@@ -112,11 +150,6 @@ public class KdTree {
         return curNode;
     }
 
-
-    // does set contain p?
-    public boolean contains(Point2D p) {
-        return false;
-    }
 
     public void draw() {
 
