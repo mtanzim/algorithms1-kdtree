@@ -266,12 +266,12 @@ public class KdTree {
                             + getOrientation(newNode.orientation) + "and rectangle: " + newNode.rect
                             .toString() + " ===\n");
 
-            StdDraw.setPenColor(Color.BLACK);
+            /*StdDraw.setPenColor(Color.BLACK);
             StdDraw.setPenRadius(0.002);
             newNode.rect.draw();
             StdDraw.setPenColor(Color.RED);
             StdDraw.setPenRadius(0.02);
-            newNode.p.draw();
+            newNode.p.draw();*/
 
 
             return newNode;
@@ -295,9 +295,23 @@ public class KdTree {
         return curNode;
     }
 
+    private void inorder(Node curNode) {
+        if (curNode == null) return;
+        inorder(curNode.lb);
+        StdDraw.setPenRadius(0.02);
+        StdDraw.setPenColor(Color.RED);
+        curNode.p.draw();
+        StdDraw.setPenRadius(0.002);
+        StdDraw.setPenColor(Color.BLACK);
+        curNode.rect.draw();
+        inorder(curNode.rt);
+
+    }
+
 
     public void draw() {
 
+        inorder(root);
     }
 
     public Iterable<Point2D> range(RectHV rect) {
@@ -315,14 +329,25 @@ public class KdTree {
         KdTree tree = new KdTree();
         StdOut.println("START: is it empty: " + tree.isEmpty());
         StdOut.println("Current size: " + tree.size());
-        tree.insert(new Point2D(0.5, 0.5)); // works
+
+        //test case 1
+        /*tree.insert(new Point2D(0.5, 0.5)); // works
         tree.insert(new Point2D(0.7, 0.5));
         tree.insert(new Point2D(0.3, 0.7));
         tree.insert(new Point2D(0.3, 0.4));
         tree.insert(new Point2D(0.8, 0.6));
         tree.insert(new Point2D(0.9, 0.6));
         tree.insert(new Point2D(0.9, 0.8));
-        tree.insert(new Point2D(0.9, 0.4));
+        tree.insert(new Point2D(0.9, 0.4));*/
+
+        //Test case on instructions
+        tree.insert(new Point2D(0.7, 0.2)); // works
+        tree.insert(new Point2D(0.5, 0.4));
+        tree.insert(new Point2D(0.2, 0.3));
+        tree.insert(new Point2D(0.4, 0.7));
+        tree.insert(new Point2D(0.9, 0.6));
+        tree.draw();
+
         // tree.insert(new Point2D(0.9, 0.7));
         // StdOut.println("Current size: " + tree.size());
         // StdOut.println("END: is it empty: " + tree.isEmpty());
