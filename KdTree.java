@@ -5,12 +5,12 @@
  **************************************************************************** */
 
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 public class KdTree {
 
@@ -310,14 +310,48 @@ public class KdTree {
 
 
     public void draw() {
-
         inorder(root);
+
+    }
+
+    private void range(Node curNode, Queue<Point2D> q, RectHV rect) {
+        if (curNode == null) {
+            return;
+        }
+        if (rect.contains(curNode.p)) {
+            q.enqueue(curNode.p);
+        }
+
+        // if (getOrientation(curNode.orientation) == "vertical") {
+        // }
+        // else {
+        //
+        // }
+
+        range(curNode.lb, q, rect);
+        StdOut.println("Traversing point " + curNode.p.toString());
+        range(curNode.rt, q, rect);
+
     }
 
     public Iterable<Point2D> range(RectHV rect) {
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
+        if (rect == null) throw new IllegalArgumentException("Null data to range!");
+        StdDraw.setPenRadius(0.002);
+        StdDraw.setPenColor(Color.GREEN);
+        rect.draw();
+        Queue<Point2D> q = new Queue<Point2D>();
+        range(root, q, rect);
+        StdOut.println("Done traversal");
+        StdOut.println("Following points in rect");
+        StdDraw.setPenRadius(0.025);
+        for (Point2D curP : q) {
+            StdOut.println(curP.toString());
+            curP.draw();
+        }
+        return q;
+        /*ArrayList<Point2D> points = new ArrayList<Point2D>();
         points.add(new Point2D(0, 0));
-        return points;
+        return points;*/
 
     }
 
@@ -347,6 +381,7 @@ public class KdTree {
         tree.insert(new Point2D(0.4, 0.7));
         tree.insert(new Point2D(0.9, 0.6));
         tree.draw();
+        tree.range(new RectHV(0.1, 0.1, 0.6, 0.6));
 
         // tree.insert(new Point2D(0.9, 0.7));
         // StdOut.println("Current size: " + tree.size());
