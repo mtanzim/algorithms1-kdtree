@@ -63,11 +63,18 @@ public class KdTree {
         // if true/vertical
         if (curNode.orientation) {
             cmp = Point2D.X_ORDER.compare(p, curNode.p);
+            if (cmp == 0) {
+                cmp = Point2D.Y_ORDER.compare(p, curNode.p);
+
+            }
         }
         // false/horizontal
         else {
             cmp = Point2D.Y_ORDER.compare(p, curNode.p);
+            if (cmp == 0) {
+                cmp = Point2D.X_ORDER.compare(p, curNode.p);
 
+            }
         }
         return cmp;
     }
@@ -160,17 +167,6 @@ public class KdTree {
                 throw new IllegalArgumentException("Something is wrong!");
         }
 
-        if (cmp < 0) {
-            if (getOrientation(curNode.orientation) == "vertical") {
-                StdOut.println("Going left");
-
-
-            }
-            else {
-
-
-            }
-        }
 
         // curRect = newRect;
         StdOut.println("New rectangle will be: " + newRect.toString());
@@ -250,9 +246,10 @@ public class KdTree {
         // root orientation is chosen to be false/horizontal, so first node will have VERTICAL
         // root = put(root, p, false);
         RectHV curRect;
+        // empty tree
         if (root == null) curRect = new RectHV(0, 0, p.x(), 1);
         else curRect = new RectHV(0, 0, 1, 1);
-        // curRect.draw();
+        curRect.draw();
         root = put(root, null, p, curRect);
 
     }
@@ -267,6 +264,7 @@ public class KdTree {
             RectHV gt;
             size++;
 
+            // when tree is empty
             if (parent != null) {
                 newOrientation = !parent.orientation;
             }
@@ -296,7 +294,8 @@ public class KdTree {
             // reverse orientation from parent
             StdOut.println(
                     "\n=== Inserted " + newNode.p.toString() + " to tree" + " with orientation "
-                            + getOrientation(newNode.orientation) + "and rectangle: " + newNode.rect
+                            + getOrientation(newNode.orientation) + " and rectangle: "
+                            + newNode.rect
                             .toString() + " ===\n");
 
             /*StdDraw.setPenColor(Color.BLACK);
@@ -323,7 +322,10 @@ public class KdTree {
         }
 
         // overwrite previously held value
-        else curNode.p = p;
+        else {
+            StdOut.println("Overwriting");
+            curNode.p = p;
+        }
 
         return curNode;
     }
@@ -351,66 +353,86 @@ public class KdTree {
         if (curNode == null) {
             return;
         }
+        StdOut.println("Checking point: " + curNode.p.toString());
         if (rect.contains(curNode.p)) {
+
             q.enqueue(curNode.p);
+            StdOut.println("Inserted point: " + curNode.p.toString());
         }
 
         int cmp = 0;
         double diff_max = 0.0;
         double diff_min = 0.0;
+        String curDirection = "";
 
 
-        /*if (getOrientation(curNode.orientation) == "vertical") {
-            diff_max = curNode.rect.xmax() - rect.xmax();
-            diff_min = curNode.rect.xmax() - rect.xmin();
+        if (getOrientation(curNode.orientation) == "vertical") {
+            if (curNode.rect.xmax() > rect.xmax()) {
+                curDirection = "left";
+            }
+            else if (curNode.rect.xmax() < rect.xmin()) {
+                curDirection = "right";
+            }
+            else {
+                curDirection = "both";
+            }
 
         }
         else if (getOrientation(curNode.orientation) == "horizontal") {
-            diff_max = curNode.rect.ymax() - rect.ymax();
-            diff_min = curNode.rect.ymax() - rect.ymin();
-
+            if (curNode.rect.ymax() > rect.ymax()) {
+                curDirection = "bottom";
+            }
+            else if (curNode.rect.ymax() < rect.ymin()) {
+                curDirection = "top";
+            }
+            else {
+                curDirection = "both";
+            }
         }
 
-        if (diff_max < 0) {
-            //    rectangle is definitely to the left or bottom
+
+        if (curDirection == "left" || curDirection == "bottom") {
+
+            StdOut.println("Direction for point: " + curNode.p.toString() + " is " + curDirection);
             range(curNode.lb, q, rect);
-            StdOut.println("Traversing point " + curNode.p.toString());
 
+            // StdOut.println("Traversing point " + curNode.p.toString());
 
         }
-        else if (diff_min > 0) {
-            // rectangle is to the top or right
-            StdOut.println("Traversing point " + curNode.p.toString());
+        else if (curDirection == "right" || curDirection == "top") {
+            // StdOut.println("Traversing point " + curNode.p.toString());
+            StdOut.println("Direction for point: " + curNode.p.toString() + " is " + curDirection);
             range(curNode.rt, q, rect);
-
         }
         else {
             // search both sides
+            StdOut.println("Direction for point: " + curNode.p.toString() + " is " + curDirection);
             range(curNode.lb, q, rect);
-            StdOut.println("Traversing point " + curNode.p.toString());
             range(curNode.rt, q, rect);
-        }*/
+        }
 
-        range(curNode.lb, q, rect);
-        StdOut.println("Traversing point " + curNode.p.toString());
-        range(curNode.rt, q, rect);
 
-        StdOut.println("Finished Traversing points for range ");
+        // range(curNode.lb, q, rect);
+        // StdOut.println("Traversing point " + curNode.p.toString());
+        // range(curNode.rt, q, rect);
+
+        // StdOut.println("Finished Traversing points for range ");
 
 
     }
 
 
     public Iterable<Point2D> range(RectHV rect) {
+        Boolean isDebug = false;
         if (rect == null) throw new IllegalArgumentException("Null data to range!");
-        StdDraw.setPenRadius(0.002);
-        StdDraw.setPenColor(Color.GREEN);
+        if (isDebug) StdDraw.setPenRadius(0.002);
+        if (isDebug) StdDraw.setPenColor(Color.GREEN);
         rect.draw();
         Queue<Point2D> q = new Queue<Point2D>();
         range(root, q, rect);
-        StdOut.println("Done traversal");
-        StdOut.println("Following points in rect");
-        StdDraw.setPenRadius(0.025);
+        if (isDebug) StdOut.println("Done traversal");
+        if (isDebug) StdOut.println("Following points in rect");
+        if (isDebug) StdDraw.setPenRadius(0.025);
         for (Point2D curP : q) {
             StdOut.println(curP.toString());
             curP.draw();
@@ -442,13 +464,24 @@ public class KdTree {
         tree.insert(new Point2D(0.9, 0.4));*/
 
         //Test case on instructions
-        tree.insert(new Point2D(0.7, 0.2)); // works
-        tree.insert(new Point2D(0.5, 0.4));
-        tree.insert(new Point2D(0.2, 0.3));
-        tree.insert(new Point2D(0.4, 0.7));
-        tree.insert(new Point2D(0.9, 0.6));
+        // tree.insert(new Point2D(0.7, 0.2)); // works
+        // tree.insert(new Point2D(0.5, 0.4));
+        // tree.insert(new Point2D(0.2, 0.3));
+        // tree.insert(new Point2D(0.4, 0.7));
+        // tree.insert(new Point2D(0.9, 0.6));
+        // tree.draw();
+        // tree.range(new RectHV(0.1, 0.35, 0.6, 0.6));
+
+        //vertical test case
+        tree.insert(new Point2D(0.3, 0.9)); // works
+        tree.insert(new Point2D(0.3, 0.1));
+        tree.insert(new Point2D(0.3, 0.2));
+        tree.insert(new Point2D(0.3, 0.8));
+        tree.insert(new Point2D(0.3, 0.4));
+        tree.insert(new Point2D(0.3, 0.7));
+        tree.insert(new Point2D(0.3, 0.5));
         tree.draw();
-        tree.range(new RectHV(0.1, 0.1, 0.6, 0.6));
+        tree.range(new RectHV(0.1, 0.35, 0.6, 0.6));
 
         // tree.insert(new Point2D(0.9, 0.7));
         // StdOut.println("Current size: " + tree.size());
