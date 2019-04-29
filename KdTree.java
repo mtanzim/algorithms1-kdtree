@@ -77,6 +77,36 @@ public class KdTree {
         return "horizontal";
     }
 
+    private String getDirection(int cmp, Node curNode) {
+        if (cmp < 0) {
+            if (getOrientation(curNode.orientation) == "vertical") {
+                return "left";
+
+            }
+            else {
+                StdOut.println("Going bottom");
+                return "bottom";
+
+            }
+        }
+        else if (cmp > 0) {
+            // StdOut.println("Going right/top");
+            if (getOrientation(curNode.orientation) == "vertical") {
+                StdOut.println("Going right");
+                return "right";
+
+            }
+            else {
+                StdOut.println("Going top");
+                return "top";
+
+            }
+        }
+
+        return "";
+    }
+
+
     private RectHV debugCmp(int cmp, Node curNode, Node parent, RectHV curRect) {
         // StdOut.println(curRect.toString());
         RectHV newRect = curRect;
@@ -105,39 +135,42 @@ public class KdTree {
 
         StdOut.println("Starting rectangle is: " + curRect.toString());
 
-        if (cmp < 0) {
-            if (getOrientation(curNode.orientation) == "vertical") {
-                StdOut.println("Going left");
+        String curDirection = getDirection(cmp, curNode);
+        switch (curDirection) {
+            case "left":
                 newRect = new RectHV(outerRect.xmin(), outerRect.ymin(), curNode.p.x(),
                                      outerRect.ymax());
-
-
-            }
-            else {
-                StdOut.println("Going bottom");
-                newRect = new RectHV(outerRect.xmin(), outerRect.ymin(),
-                                     outerRect.xmax(),
-                                     curNode.p.y());
-
-
-            }
-        }
-        else if (cmp > 0) {
-            // StdOut.println("Going right/top");
-            if (getOrientation(curNode.orientation) == "vertical") {
-                StdOut.println("Going right");
+                break;
+            case "right":
                 newRect = new RectHV(curNode.p.x(), outerRect.ymin(),
                                      outerRect.xmax(),
                                      outerRect.ymax());
-            }
-            else {
-                StdOut.println("Going top");
+                break;
+            case "bottom":
+                newRect = new RectHV(outerRect.xmin(), outerRect.ymin(),
+                                     outerRect.xmax(),
+                                     curNode.p.y());
+                break;
+            case "top":
                 newRect = new RectHV(outerRect.xmin(), curNode.p.y(),
                                      outerRect.xmax(),
                                      outerRect.ymax());
-            }
+                break;
+            default:
+                throw new IllegalArgumentException("Something is wrong!");
         }
 
+        if (cmp < 0) {
+            if (getOrientation(curNode.orientation) == "vertical") {
+                StdOut.println("Going left");
+
+
+            }
+            else {
+
+
+            }
+        }
 
         // curRect = newRect;
         StdOut.println("New rectangle will be: " + newRect.toString());
@@ -322,17 +355,51 @@ public class KdTree {
             q.enqueue(curNode.p);
         }
 
-        // if (getOrientation(curNode.orientation) == "vertical") {
-        // }
-        // else {
-        //
-        // }
+        int cmp = 0;
+        double diff_max = 0.0;
+        double diff_min = 0.0;
+
+
+        /*if (getOrientation(curNode.orientation) == "vertical") {
+            diff_max = curNode.rect.xmax() - rect.xmax();
+            diff_min = curNode.rect.xmax() - rect.xmin();
+
+        }
+        else if (getOrientation(curNode.orientation) == "horizontal") {
+            diff_max = curNode.rect.ymax() - rect.ymax();
+            diff_min = curNode.rect.ymax() - rect.ymin();
+
+        }
+
+        if (diff_max < 0) {
+            //    rectangle is definitely to the left or bottom
+            range(curNode.lb, q, rect);
+            StdOut.println("Traversing point " + curNode.p.toString());
+
+
+        }
+        else if (diff_min > 0) {
+            // rectangle is to the top or right
+            StdOut.println("Traversing point " + curNode.p.toString());
+            range(curNode.rt, q, rect);
+
+        }
+        else {
+            // search both sides
+            range(curNode.lb, q, rect);
+            StdOut.println("Traversing point " + curNode.p.toString());
+            range(curNode.rt, q, rect);
+        }*/
 
         range(curNode.lb, q, rect);
         StdOut.println("Traversing point " + curNode.p.toString());
         range(curNode.rt, q, rect);
 
+        StdOut.println("Finished Traversing points for range ");
+
+
     }
+
 
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new IllegalArgumentException("Null data to range!");
