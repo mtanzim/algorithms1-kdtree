@@ -20,6 +20,7 @@ public class KdTree {
     private int size = 0;
     // false is horizontal
     // true is vertical
+    private static final boolean isDebug = false;
 
     private boolean ROOT_ORIENTATION = true;
 
@@ -91,20 +92,20 @@ public class KdTree {
 
             }
             else {
-                StdOut.println("Going bottom");
+                if (isDebug) StdOut.println("Going bottom");
                 return "bottom";
 
             }
         }
         else if (cmp > 0) {
-            // StdOut.println("Going right/top");
+            // if (isDebug) StdOut.println("Going right/top");
             if (getOrientation(curNode.orientation) == "vertical") {
-                StdOut.println("Going right");
+                if (isDebug) StdOut.println("Going right");
                 return "right";
 
             }
             else {
-                StdOut.println("Going top");
+                if (isDebug) StdOut.println("Going top");
                 return "top";
 
             }
@@ -115,7 +116,7 @@ public class KdTree {
 
 
     private RectHV debugCmp(int cmp, Node curNode, Node parent, RectHV curRect) {
-        // StdOut.println(curRect.toString());
+        // if (isDebug) StdOut.println(curRect.toString());
         RectHV newRect = curRect;
         RectHV outerRect;
 
@@ -127,20 +128,20 @@ public class KdTree {
             outerRect = curRect;
         }
 
-        StdOut.println(
+        if (isDebug) StdOut.println(
                 "\nCurrently at Node with point: " + curNode.p.toString() + " with orientation "
                         + getOrientation(curNode.orientation));
 
 
         if (parent != null) {
 
-            StdOut.println(
+            if (isDebug) StdOut.println(
                     "Parent Node with point: " + parent.p.toString() + " with orientation "
                             + getOrientation(parent.orientation) + " rectangle " + parent.rect
                             .toString());
         }
 
-        StdOut.println("Starting rectangle is: " + curRect.toString());
+        if (isDebug) StdOut.println("Starting rectangle is: " + curRect.toString());
 
         String curDirection = getDirection(cmp, curNode);
         switch (curDirection) {
@@ -169,26 +170,28 @@ public class KdTree {
 
 
         // curRect = newRect;
-        StdOut.println("New rectangle will be: " + newRect.toString());
+        if (isDebug) StdOut.println("New rectangle will be: " + newRect.toString());
         return newRect;
     }
 
     private void debugCmp(int cmp, Node curNode) {
-        StdOut.println(
+        if (isDebug) StdOut.println(
                 "Currently at Node with point: " + curNode.p.toString() + " with orientation "
                         + getOrientation(curNode.orientation));
         if (cmp < 0) {
             if (getOrientation(curNode.orientation) == "vertical") {
-                StdOut.println("Going left");
+                if (isDebug) StdOut.println("Going left");
             }
             else {
-                StdOut.println("Going bottom");
+                if (isDebug) StdOut.println("Going bottom");
             }
         }
         else if (cmp > 0) {
-            // StdOut.println("Going right/top");
+            // if (isDebug) StdOut.println("Going right/top");
             if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going right");
-            else StdOut.println("Going top");
+            else {
+                if (isDebug) StdOut.println("Going top");
+            }
         }
     }
 
@@ -197,7 +200,7 @@ public class KdTree {
         if (p == null) throw new IllegalArgumentException("argument to contains() is null");
         // return false;
         // StdOut.println("Looking for point " + p.toString());
-        StdOut.println("\n\n*** Searching " + p.toString() + " ***\n");
+        if (isDebug) StdOut.println("\n\n*** Searching " + p.toString() + " ***\n");
 
         return get(p);
     }
@@ -205,13 +208,13 @@ public class KdTree {
     private boolean get(Point2D p) {
         Node found = get(root, p);
         if (found != null) {
-            StdOut.println(
+            if (isDebug) StdOut.println(
                     "\n=== FOUND " + found.p.toString() + " ===\n");
             return true;
         }
 
         // StdOut.println("DID NOT FIND point " + p.toString());
-        StdOut.println(
+        if (isDebug) StdOut.println(
                 "\n=== DID NOT FIND " + p.toString() + " ===\n");
         return false;
     }
@@ -242,7 +245,7 @@ public class KdTree {
     public void insert(Point2D p) {
         if (p == null) throw new IllegalArgumentException("calls put() with a null key");
 
-        StdOut.println("\n\n*** Inserting " + p.toString() + " ***\n");
+        if (isDebug) StdOut.println("\n\n*** Inserting " + p.toString() + " ***\n");
         // root orientation is chosen to be false/horizontal, so first node will have VERTICAL
         // root = put(root, p, false);
         RectHV curRect;
@@ -290,9 +293,9 @@ public class KdTree {
 
             newNode = new Node(p, newOrientation, curRect);
 
-            // StdOut.println(curRect);
+            // if (isDebug) StdOut.println(curRect);
             // reverse orientation from parent
-            StdOut.println(
+            if (isDebug) StdOut.println(
                     "\n=== Inserted " + newNode.p.toString() + " to tree" + " with orientation "
                             + getOrientation(newNode.orientation) + " and rectangle: "
                             + newNode.rect
@@ -323,7 +326,7 @@ public class KdTree {
 
         // overwrite previously held value
         else {
-            StdOut.println("Overwriting");
+            if (isDebug) StdOut.println("Overwriting");
             curNode.p = p;
         }
 
@@ -353,11 +356,11 @@ public class KdTree {
         if (curNode == null) {
             return;
         }
-        StdOut.println("Checking point: " + curNode.p.toString());
+        if (isDebug) StdOut.println("Checking point: " + curNode.p.toString());
         if (rect.contains(curNode.p)) {
 
             q.enqueue(curNode.p);
-            StdOut.println("Inserted point: " + curNode.p.toString());
+            if (isDebug) StdOut.println("Inserted point: " + curNode.p.toString());
         }
 
         int cmp = 0;
@@ -393,37 +396,39 @@ public class KdTree {
 
         if (curDirection == "left" || curDirection == "bottom") {
 
-            StdOut.println("Direction for point: " + curNode.p.toString() + " is " + curDirection);
+            if (isDebug) StdOut.println(
+                    "Direction for point: " + curNode.p.toString() + " is " + curDirection);
             range(curNode.lb, q, rect);
 
-            // StdOut.println("Traversing point " + curNode.p.toString());
+            // if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
 
         }
         else if (curDirection == "right" || curDirection == "top") {
             // StdOut.println("Traversing point " + curNode.p.toString());
-            StdOut.println("Direction for point: " + curNode.p.toString() + " is " + curDirection);
+            if (isDebug) StdOut.println(
+                    "Direction for point: " + curNode.p.toString() + " is " + curDirection);
             range(curNode.rt, q, rect);
         }
         else {
             // search both sides
-            StdOut.println("Direction for point: " + curNode.p.toString() + " is " + curDirection);
+            if (isDebug) StdOut.println(
+                    "Direction for point: " + curNode.p.toString() + " is " + curDirection);
             range(curNode.lb, q, rect);
             range(curNode.rt, q, rect);
         }
 
 
         // range(curNode.lb, q, rect);
-        // StdOut.println("Traversing point " + curNode.p.toString());
+        // if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
         // range(curNode.rt, q, rect);
 
-        // StdOut.println("Finished Traversing points for range ");
+        // if (isDebug) StdOut.println("Finished Traversing points for range ");
 
 
     }
 
 
     public Iterable<Point2D> range(RectHV rect) {
-        Boolean isDebug = false;
         if (rect == null) throw new IllegalArgumentException("Null data to range!");
         if (isDebug) StdDraw.setPenRadius(0.002);
         if (isDebug) StdDraw.setPenColor(Color.GREEN);
@@ -434,7 +439,7 @@ public class KdTree {
         if (isDebug) StdOut.println("Following points in rect");
         if (isDebug) StdDraw.setPenRadius(0.025);
         for (Point2D curP : q) {
-            StdOut.println(curP.toString());
+            if (isDebug) StdOut.println(curP.toString());
             curP.draw();
         }
         return q;
