@@ -450,41 +450,29 @@ public class KdTree {
     }
 
     //test inorder first by traversing all points
-    private void nearest(Node curNode, Point2D p, Node prevNode) {
-        if (curNode == null) {
+    private Point2D nearest(Point2D p, Node curNode, Node prevNode, double curMin,
+                            Point2D curChamp) {
 
-            return;
-        }
-
-        double curDistance = p.distanceSquaredTo(curNode.p);
+        if (curNode == null) return curChamp;
+        double curDistance = curNode.p.distanceSquaredTo(p);
         double prevDistance = curDistance;
-
-        double nowMin;
-
         if (prevNode != null) {
-            prevDistance = p.distanceSquaredTo(prevNode.p);
+            prevDistance = prevNode.p.distanceSquaredTo(p);
         }
-        StdOut.println("Searching for nearest in " + curNode.p.toString() + " with distance "
-                               + curDistance + " and prevDistance " + prevDistance);
+
+        if (curDistance < curMin) {
+            curMin = curDistance;
+            curChamp = curNode.p;
+        }
+        if (prevDistance < curDistance) return curChamp;
+
 
         if (curNode.rect.contains(p)) {
-            nearest(curNode.lb, p, curNode);
-
-            if (curDistance > prevDistance) {
-                nearest(curNode.rt, p, curNode);
-
-            }
-            // reached end of subtree
-            else {
-                StdOut.println("Current champion is " + curDistance);
-            }
+            return nearest(p, curNode.lb, curNode, curMin, curChamp);
         }
         else {
-            nearest(curNode.rt, p, curNode);
-            if (curDistance > prevDistance) nearest(curNode.lb, p, curNode);
-            else {
-                StdOut.println("Current champion is " + curDistance);
-            }
+            return nearest(p, curNode.rt, curNode, curMin, curChamp);
+
         }
 
 
@@ -492,8 +480,8 @@ public class KdTree {
 
 
     public Point2D nearest(Point2D p) {
-        Point2D nearestPoint = new Point2D(1000, 1000);
-        nearest(root, p, null);
+        Point2D nearestPoint = nearest(p, root, null, 10.0, root.p);
+        StdOut.println("Final champion is " + nearestPoint.toString());
         return nearestPoint;
         // return new Point2D(0, 0);
     }
@@ -521,13 +509,14 @@ public class KdTree {
         tree.insert(new Point2D(0.9, 0.6));
         tree.draw();
         // tree.range(new RectHV(0.1, 0.35, 0.6, 0.6));
-        Point2D query = new Point2D(0.1, 0.9);
+        /*Point2D query = new Point2D(0.1, 0.9);
+        StdDraw.setPenColor(Color.cyan);
+        StdDraw.setPenRadius(0.03);
+        query.draw();
         Point2D closest = tree.nearest(query);
         StdDraw.setPenColor(Color.green);
-        StdDraw.setPenRadius(0.03);
         closest.draw();
-        StdDraw.setPenColor(Color.cyan);
-        query.draw();
+
 
         Point2D queryB = new Point2D(0.9, 0.9);
         Point2D closestB = tree.nearest(queryB);
@@ -535,7 +524,16 @@ public class KdTree {
         StdDraw.setPenRadius(0.03);
         closestB.draw();
         StdDraw.setPenColor(Color.cyan);
-        queryB.draw();
+        queryB.draw();*/
+
+
+        Point2D queryC = new Point2D(0.2, 0.41);
+        Point2D closestC = tree.nearest(queryC);
+        StdDraw.setPenColor(Color.green);
+        StdDraw.setPenRadius(0.03);
+        closestC.draw();
+        StdDraw.setPenColor(Color.cyan);
+        queryC.draw();
 
         //vertical test case
         // tree.insert(new Point2D(0.3, 0.9)); // works
