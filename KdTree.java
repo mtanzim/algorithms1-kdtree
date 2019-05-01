@@ -454,6 +454,7 @@ public class KdTree {
                             Point2D curChamp) {
 
         if (curNode == null) return curChamp;
+        if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
         double curDistance = curNode.p.distanceSquaredTo(p);
         double prevDistance = curDistance;
         if (prevNode != null) {
@@ -464,14 +465,21 @@ public class KdTree {
             curMin = curDistance;
             curChamp = curNode.p;
         }
-        if (prevDistance < curDistance) return curChamp;
+        // not getting any closer
+        // if (curDistance > prevDistance) return curChamp;
 
-
+        //currently never going to the right tree!
         if (curNode.rect.contains(p)) {
-            return nearest(p, curNode.lb, curNode, curMin, curChamp);
+            // get champion of left subtree
+            Point2D immediateChamp = nearest(p, curNode.lb, curNode, curMin, curChamp);
+            if (immediateChamp.distanceSquaredTo(p) < curDistance) return immediateChamp;
+            else return nearest(p, curNode.rt, curNode, curMin, curChamp);
+
         }
         else {
-            return nearest(p, curNode.rt, curNode, curMin, curChamp);
+            Point2D immediateChamp = nearest(p, curNode.rt, curNode, curMin, curChamp);
+            if (immediateChamp.distanceSquaredTo(p) < curDistance) return immediateChamp;
+            else return nearest(p, curNode.lb, curNode, curMin, curChamp);
 
         }
 
@@ -481,15 +489,15 @@ public class KdTree {
 
     public Point2D nearest(Point2D p) {
         Point2D nearestPoint = nearest(p, root, null, 10.0, root.p);
-        StdOut.println("Final champion is " + nearestPoint.toString());
+        if (isDebug) StdOut.println("\nFinal champion is " + nearestPoint.toString());
         return nearestPoint;
         // return new Point2D(0, 0);
     }
 
     public static void main(String[] args) {
         KdTree tree = new KdTree();
-        StdOut.println("START: is it empty: " + tree.isEmpty());
-        StdOut.println("Current size: " + tree.size());
+        // StdOut.println("START: is it empty: " + tree.isEmpty());
+        // StdOut.println("Current size: " + tree.size());
 
         //test case 1
         /*tree.insert(new Point2D(0.5, 0.5)); // works
@@ -509,7 +517,7 @@ public class KdTree {
         tree.insert(new Point2D(0.9, 0.6));
         tree.draw();
         // tree.range(new RectHV(0.1, 0.35, 0.6, 0.6));
-        /*Point2D query = new Point2D(0.1, 0.9);
+        Point2D query = new Point2D(0.1, 0.9);
         StdDraw.setPenColor(Color.cyan);
         StdDraw.setPenRadius(0.03);
         query.draw();
@@ -524,10 +532,10 @@ public class KdTree {
         StdDraw.setPenRadius(0.03);
         closestB.draw();
         StdDraw.setPenColor(Color.cyan);
-        queryB.draw();*/
+        queryB.draw();
 
 
-        Point2D queryC = new Point2D(0.2, 0.41);
+        Point2D queryC = new Point2D(0.2, 0.45);
         Point2D closestC = tree.nearest(queryC);
         StdDraw.setPenColor(Color.green);
         StdDraw.setPenRadius(0.03);

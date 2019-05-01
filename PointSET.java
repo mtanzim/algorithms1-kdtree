@@ -8,7 +8,6 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdDraw;
-import edu.princeton.cs.algs4.StdOut;
 
 public class PointSET {
 
@@ -101,7 +100,7 @@ public class PointSET {
     }
 
     public static void main(String[] args) {
-        StdOut.println("Hello!");
+        // StdOut.println("Hello!");
         PointSET ps = new PointSET();
         ps.insert(new Point2D(0.1, 0.2));
         ps.insert(new Point2D(0.2, 0.2));
