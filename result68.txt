@@ -3,13 +3,13 @@ See the Assessment Guide for information on how to interpret this report.
 ASSESSMENT SUMMARY
 
 Compilation:  PASSED
-API:          PASSED
+API:          PASSEDCorrectness:  24/35 tests passed
 
 Spotbugs:     FAILED (11 warnings)
 PMD:          FAILED (24 warnings)
 Checkstyle:   FAILED (0 errors, 57 warnings)
 
-Correctness:  24/35 tests passed
+
 Memory:       16/16 tests passed
 Timing:       14/42 tests passed
 

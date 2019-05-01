@@ -93,7 +93,7 @@ public class PointSET {
         }
         SET<Node> nearestPointSet = new SET<Node>();
         for (Point2D curPointInSet : pointSet) {
-            // if (curPointInSet.equals(p)) continue;
+            if (curPointInSet.equals(p)) return p;
             Node curNode = new Node(curPointInSet, curPointInSet.distanceSquaredTo(p));
             nearestPointSet.add(curNode);
         }

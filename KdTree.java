@@ -119,15 +119,8 @@ public class KdTree {
     private RectHV debugCmp(int cmp, Node curNode, Node parent, RectHV curRect) {
         // if (isDebug) StdOut.println(curRect.toString());
         RectHV newRect = curRect;
-        RectHV outerRect;
+        RectHV outerRect = curRect;
 
-        if (parent == null) {
-            outerRect = new RectHV(0, 0, 1, 1);
-        }
-        else {
-            // outerRect = parent.rect;
-            outerRect = curRect;
-        }
 
         if (isDebug) StdOut.println(
                 "\nCurrently at Node with point: " + curNode.p.toString() + " with orientation "
@@ -248,10 +241,8 @@ public class KdTree {
         if (p == null) throw new IllegalArgumentException("calls put() with a null key");
 
         if (isDebug) StdOut.println("\n\n*** Inserting " + p.toString() + " ***\n");
-        // root orientation is chosen to be false/horizontal, so first node will have VERTICAL
-        // root = put(root, p, false);
+
         RectHV curRect;
-        // empty tree
         if (root == null) curRect = new RectHV(0, 0, p.x(), 1);
         else curRect = new RectHV(0, 0, 1, 1);
         if (isDebug) curRect.draw();
@@ -470,8 +461,14 @@ public class KdTree {
             Point2D immediateChamp = nearest(p, curNode.lb, curNode, curMin, curChamp);
             curMin = p.distanceSquaredTo(immediateChamp);
             curChamp = immediateChamp;
+
+            if (isDebug) StdOut.println("Back to point " + curNode.p.toString());
+
             // also go right
-            if (curMin < curDistance) return nearest(p, curNode.rt, curNode, curMin, curChamp);
+            if (curMin <= curDistance) {
+                if (isDebug) StdOut.println("Going " + getDirection(-1, curNode));
+                return nearest(p, curNode.rt, curNode, curMin, curChamp);
+            }
         }
         else {
             if (isDebug) StdOut.println("Going " + getDirection(1, curNode));
@@ -479,7 +476,11 @@ public class KdTree {
             curMin = p.distanceSquaredTo(immediateChamp);
             curChamp = immediateChamp;
             // also go left
-            if (curMin < curDistance) return nearest(p, curNode.lb, curNode, curMin, curChamp);
+            if (isDebug) StdOut.println("Back to point " + curNode.p.toString());
+            if (curMin <= curDistance) {
+                if (isDebug) StdOut.println("Going " + getDirection(-1, curNode));
+                return nearest(p, curNode.lb, curNode, curMin, curChamp);
+            }
         }
         return curChamp;
 
@@ -509,7 +510,7 @@ public class KdTree {
         }
         kdtree.draw();
         // Point2D query = new Point2D(0.393, 0.955);
-        Point2D query = new Point2D(1.0, 0.03125);
+        Point2D query = new Point2D(0.205, 0.407);
 
         StdDraw.setPenColor(Color.cyan);
         StdDraw.setPenRadius(0.03);
