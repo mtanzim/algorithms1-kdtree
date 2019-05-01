@@ -48,10 +48,12 @@ public class PointSET {
     }*/
 
     public Iterable<Point2D> range(RectHV rect) {
+
+        if (rect == null) throw new IllegalArgumentException("null rect");
         // copy over every other point to test clients
 
         // StdOut.println(rect.toString());
-        SET testPointSet = new SET<Point2D>();
+        SET<Point2D> testPointSet = new SET<Point2D>();
         int i = 0;
         for (Point2D p : pointSet) {
             // if (i % 2 == 0) testPointSet.add(p);
@@ -65,6 +67,8 @@ public class PointSET {
 
 
     public Point2D nearest(Point2D p) {
+        if (p == null) throw new IllegalArgumentException("Null p");
+        if (size() == 0) throw new IllegalArgumentException("Empty set!");
 
         class Node implements Comparable<Node> {
             private Point2D myCurP;
@@ -92,10 +96,6 @@ public class PointSET {
             Node curNode = new Node(curPointInSet, curPointInSet.distanceSquaredTo(p));
             nearestPointSet.add(curNode);
         }
-        // for (Node curNode : nearestPointSet) {
-        //     curNode.myCurP.toString();
-        // }
-        // send point in the middle to test clients
         return nearestPointSet.min().getCurP();
     }
 

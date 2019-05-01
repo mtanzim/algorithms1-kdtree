@@ -188,10 +188,11 @@ public class KdTree {
         }
         else if (cmp > 0) {
             // if (isDebug) StdOut.println("Going right/top");
-            if (getOrientation(curNode.orientation) == "vertical") StdOut.println("Going right");
-            else {
-                if (isDebug) StdOut.println("Going top");
-            }
+            if (getOrientation(curNode.orientation) == "vertical")
+                if (isDebug) StdOut.println("Going right");
+                else {
+                    if (isDebug) StdOut.println("Going top");
+                }
         }
     }
 
@@ -252,7 +253,7 @@ public class KdTree {
         // empty tree
         if (root == null) curRect = new RectHV(0, 0, p.x(), 1);
         else curRect = new RectHV(0, 0, 1, 1);
-        curRect.draw();
+        if (isDebug) curRect.draw();
         root = put(root, null, p, curRect);
 
     }
@@ -432,7 +433,7 @@ public class KdTree {
         if (rect == null) throw new IllegalArgumentException("Null data to range!");
         if (isDebug) StdDraw.setPenRadius(0.002);
         if (isDebug) StdDraw.setPenColor(Color.GREEN);
-        rect.draw();
+        if (isDebug) rect.draw();
         Queue<Point2D> q = new Queue<Point2D>();
         range(root, q, rect);
         if (isDebug) StdOut.println("Done traversal");
@@ -440,12 +441,10 @@ public class KdTree {
         if (isDebug) StdDraw.setPenRadius(0.025);
         for (Point2D curP : q) {
             if (isDebug) StdOut.println(curP.toString());
-            curP.draw();
+            if (isDebug) curP.draw();
         }
         return q;
-        /*ArrayList<Point2D> points = new ArrayList<Point2D>();
-        points.add(new Point2D(0, 0));
-        return points;*/
+
 
     }
 
@@ -488,6 +487,7 @@ public class KdTree {
 
 
     public Point2D nearest(Point2D p) {
+        if (p == null) throw new IllegalArgumentException("Null point provided");
         Point2D nearestPoint = nearest(p, root, null, 10.0, root.p);
         if (isDebug) StdOut.println("\nFinal champion is " + nearestPoint.toString());
         return nearestPoint;
