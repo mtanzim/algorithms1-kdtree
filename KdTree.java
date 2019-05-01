@@ -4,6 +4,7 @@
  *  Description:
  **************************************************************************** */
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
@@ -452,35 +453,35 @@ public class KdTree {
     private Point2D nearest(Point2D p, Node curNode, Node prevNode, double curMin,
                             Point2D curChamp) {
 
+        if (size() == 0) return null;
         if (curNode == null) return curChamp;
-        if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
-        double curDistance = curNode.p.distanceSquaredTo(p);
-        double prevDistance = curDistance;
-        if (prevNode != null) {
-            prevDistance = prevNode.p.distanceSquaredTo(p);
-        }
 
+        if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
+
+        double curDistance = curNode.p.distanceSquaredTo(p);
         if (curDistance < curMin) {
             curMin = curDistance;
             curChamp = curNode.p;
         }
-        // not getting any closer
-        // if (curDistance > prevDistance) return curChamp;
 
-        //currently never going to the right tree!
         if (curNode.rect.contains(p)) {
+            if (isDebug) StdOut.println("Going " + getDirection(-1, curNode));
             // get champion of left subtree
             Point2D immediateChamp = nearest(p, curNode.lb, curNode, curMin, curChamp);
-            if (immediateChamp.distanceSquaredTo(p) < curDistance) return immediateChamp;
-            else return nearest(p, curNode.rt, curNode, curMin, curChamp);
-
+            curMin = p.distanceSquaredTo(immediateChamp);
+            curChamp = immediateChamp;
+            // also go right
+            if (curMin < curDistance) return nearest(p, curNode.rt, curNode, curMin, curChamp);
         }
         else {
+            if (isDebug) StdOut.println("Going " + getDirection(1, curNode));
             Point2D immediateChamp = nearest(p, curNode.rt, curNode, curMin, curChamp);
-            if (immediateChamp.distanceSquaredTo(p) < curDistance) return immediateChamp;
-            else return nearest(p, curNode.lb, curNode, curMin, curChamp);
-
+            curMin = p.distanceSquaredTo(immediateChamp);
+            curChamp = immediateChamp;
+            // also go left
+            if (curMin < curDistance) return nearest(p, curNode.lb, curNode, curMin, curChamp);
         }
+        return curChamp;
 
 
     }
@@ -495,7 +496,30 @@ public class KdTree {
     }
 
     public static void main(String[] args) {
-        KdTree tree = new KdTree();
+
+        String filename = args[0];
+        In in = new In(filename);
+        PointSET brute = new PointSET();
+        KdTree kdtree = new KdTree();
+        while (!in.isEmpty()) {
+            double x = in.readDouble();
+            double y = in.readDouble();
+            Point2D p = new Point2D(x, y);
+            kdtree.insert(p);
+        }
+        kdtree.draw();
+        // Point2D query = new Point2D(0.393, 0.955);
+        Point2D query = new Point2D(1.0, 0.03125);
+
+        StdDraw.setPenColor(Color.cyan);
+        StdDraw.setPenRadius(0.03);
+        query.draw();
+        Point2D nearest = kdtree.nearest(query);
+        StdDraw.setPenColor(Color.GREEN);
+        nearest.draw();
+        StdOut.println(nearest.toString());
+
+
         // StdOut.println("START: is it empty: " + tree.isEmpty());
         // StdOut.println("Current size: " + tree.size());
 
@@ -510,38 +534,38 @@ public class KdTree {
         tree.insert(new Point2D(0.9, 0.4));*/
 
         //Test case on instructions
-        tree.insert(new Point2D(0.7, 0.2)); // works
-        tree.insert(new Point2D(0.5, 0.4));
-        tree.insert(new Point2D(0.2, 0.3));
-        tree.insert(new Point2D(0.4, 0.7));
-        tree.insert(new Point2D(0.9, 0.6));
-        tree.draw();
+        // tree.insert(new Point2D(0.7, 0.2)); // works
+        // tree.insert(new Point2D(0.5, 0.4));
+        // tree.insert(new Point2D(0.2, 0.3));
+        // tree.insert(new Point2D(0.4, 0.7));
+        // tree.insert(new Point2D(0.9, 0.6));
+        // tree.draw();
         // tree.range(new RectHV(0.1, 0.35, 0.6, 0.6));
-        Point2D query = new Point2D(0.1, 0.9);
-        StdDraw.setPenColor(Color.cyan);
-        StdDraw.setPenRadius(0.03);
-        query.draw();
-        Point2D closest = tree.nearest(query);
-        StdDraw.setPenColor(Color.green);
-        closest.draw();
+        // Point2D query = new Point2D(0.1, 0.9);
+        // StdDraw.setPenColor(Color.cyan);
+        // StdDraw.setPenRadius(0.03);
+        // query.draw();
+        // Point2D closest = tree.nearest(query);
+        // StdDraw.setPenColor(Color.green);
+        // closest.draw();
 
 
-        Point2D queryB = new Point2D(0.9, 0.9);
-        Point2D closestB = tree.nearest(queryB);
-        StdDraw.setPenColor(Color.green);
-        StdDraw.setPenRadius(0.03);
-        closestB.draw();
-        StdDraw.setPenColor(Color.cyan);
-        queryB.draw();
+        // Point2D queryB = new Point2D(0.9, 0.9);
+        // Point2D closestB = tree.nearest(queryB);
+        // StdDraw.setPenColor(Color.green);
+        // StdDraw.setPenRadius(0.03);
+        // closestB.draw();
+        // StdDraw.setPenColor(Color.cyan);
+        // queryB.draw();
 
 
-        Point2D queryC = new Point2D(0.2, 0.45);
-        Point2D closestC = tree.nearest(queryC);
-        StdDraw.setPenColor(Color.green);
-        StdDraw.setPenRadius(0.03);
-        closestC.draw();
-        StdDraw.setPenColor(Color.cyan);
-        queryC.draw();
+        // Point2D queryC = new Point2D(0.2, 0.45);
+        // Point2D closestC = tree.nearest(queryC);
+        // StdDraw.setPenColor(Color.green);
+        // StdDraw.setPenRadius(0.03);
+        // closestC.draw();
+        // StdDraw.setPenColor(Color.cyan);
+        // queryC.draw();
 
         //vertical test case
         // tree.insert(new Point2D(0.3, 0.9)); // works
