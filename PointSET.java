@@ -69,9 +69,9 @@ public class PointSET {
 
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Null p");
-        if (size() == 0) return null;
+        if (isEmpty()) throw new IllegalArgumentException("Empty set");
 
-        class Node implements Comparable<Node> {
+        /*class Node implements Comparable<Node> {
             private Point2D myCurP;
             private double myDistanceSq;
 
@@ -90,14 +90,20 @@ public class PointSET {
                 return 0;
             }
 
-        }
-        SET<Node> nearestPointSet = new SET<Node>();
+        }*/
+        double minDistance = 10000.0;
+        double curDistance = 10000.0;
+        Point2D champion = null;
         for (Point2D curPointInSet : pointSet) {
             if (curPointInSet.equals(p)) return p;
-            Node curNode = new Node(curPointInSet, curPointInSet.distanceSquaredTo(p));
-            nearestPointSet.add(curNode);
+            curDistance = curPointInSet.distanceSquaredTo(p);
+            if (curDistance < minDistance) {
+                minDistance = curDistance;
+                champion = curPointInSet;
+            }
+
         }
-        return nearestPointSet.min().getCurP();
+        return champion;
     }
 
     public static void main(String[] args) {
