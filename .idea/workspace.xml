@@ -2,13 +2,13 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/KdTree.java" line="4" />
-    <bookmark url="file://$PROJECT_DIR$/KdTree.java" line="321" mnemonic="2" />
+    <bookmark url="file://$PROJECT_DIR$/KdTree.java" line="318" mnemonic="2" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c8e1883c-6b5c-4b02-9b39-4025b68593ac" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/result78.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PointSET.java" beforeDir="false" afterPath="$PROJECT_DIR$/PointSET.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KdTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/KdTree.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,11 +28,20 @@
       <content type="file-editors">
         <state>
           <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file pinned="false" current-in-tab="true">
+            <file pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/result73.txt">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="97">
-                    <caret line="776" column="36" selection-start-line="776" selection-start-column="36" selection-end-line="776" selection-end-column="36" />
+                  <state relative-caret-position="131">
+                    <caret line="640" column="59" selection-start-line="640" selection-start-column="59" selection-end-line="640" selection-end-column="59" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/result78.txt">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="499">
+                    <caret line="821" column="43" selection-start-line="821" selection-start-column="43" selection-end-line="821" selection-end-column="57" />
                   </state>
                 </provider>
               </entry>
@@ -44,20 +53,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/KdTree.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
-              <caret line="290" column="40" selection-start-line="290" selection-start-column="40" selection-end-line="290" selection-end-column="40" />
+            <state relative-caret-position="469">
+              <caret line="139" selection-start-line="139" selection-end-line="139" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PointSET.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="100" column="42" selection-start-line="100" selection-start-column="42" selection-end-line="100" selection-end-column="42" />
+            <state relative-caret-position="98">
+              <caret line="31" column="35" lean-forward="true" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -65,8 +74,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/NearestNeighborVisualizer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="26" column="31" lean-forward="true" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+            <state relative-caret-position="425">
+              <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -83,8 +92,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/KdTreeVisualizer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
+            <state relative-caret-position="306">
+              <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -96,7 +105,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>newNode</find>
       <find>rect.tost</find>
       <find>parent</find>
       <find>draw</find>
@@ -105,7 +113,6 @@
       <find>X_ORDER</find>
       <find>RANGE</find>
       <find>STDdRAW.SE</find>
-      <find>getCmp</find>
       <find>stdout.println</find>
       <find>isdebug</find>
       <find>Stdout.println</find>
@@ -126,6 +133,8 @@
       <find>empty set</find>
       <find>Failed</find>
       <find>nearest</find>
+      <find>debugCmp</find>
+      <find>getCmp</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -149,8 +158,9 @@
         <option value="$PROJECT_DIR$/result68.txt" />
         <option value="$PROJECT_DIR$/result63_latest.txt" />
         <option value="$PROJECT_DIR$/result73.txt" />
-        <option value="$PROJECT_DIR$/KdTree.java" />
         <option value="$PROJECT_DIR$/PointSET.java" />
+        <option value="$PROJECT_DIR$/result78.txt" />
+        <option value="$PROJECT_DIR$/KdTree.java" />
       </list>
     </option>
   </component>
@@ -211,7 +221,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.NearestNeighborVisualizer">
+  <component name="RunManager" selected="Application.KdTree">
     <configuration name="KdTree" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="KdTree" />
       <module name="Algorithms, Part I" />
@@ -246,7 +256,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="1006" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" side_tool="true" visible="true" weight="0.19451766" />
       <window_info id="Structure" order="1" show_stripe_button="false" side_tool="true" weight="0.25" />
@@ -254,14 +263,14 @@
       <window_info id="Favorites" order="3" show_stripe_button="false" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3290398" />
-      <window_info anchor="bottom" x="0" y="286" width="1873" height="689" id="Run" order="2" type="WINDOWED" weight="0.25995317" />
-      <window_info anchor="bottom" x="2152" y="123" width="1541" height="868" id="Debug" order="3" type="WINDOWED" weight="0.39929742" />
+      <window_info anchor="bottom" x="-251" y="342" width="1893" height="689" id="Run" order="2" type="WINDOWED" weight="0.25995317" />
+      <window_info active="true" anchor="bottom" x="2052" y="163" width="1571" height="868" id="Debug" order="3" type="WINDOWED" visible="true" weight="0.39929742" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" show_stripe_button="false" weight="0.32904148" />
       <window_info anchor="bottom" id="CheckStyle" order="7" weight="0.3286385" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298122" />
-      <window_info anchor="bottom" x="2178" y="452" width="985" height="444" id="Terminal" order="9" type="WINDOWED" weight="0.30327868" />
+      <window_info anchor="bottom" x="551" y="482" width="995" height="444" id="Terminal" order="9" type="WINDOWED" weight="0.30327868" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50065446" side_tool="true" weight="0.26056337" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.3814554" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="12" sideWeight="0.49934554" weight="0.26056337" />
@@ -346,16 +355,23 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="start fixing timing issues in PointSet nearest" />
-    <option name="LAST_COMMIT_MESSAGE" value="start fixing timing issues in PointSet nearest" />
+    <MESSAGE value="remove Node subclass in PointSet, and traversing the full tree for nearest with a simple minimum algorithm" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove Node subclass in PointSet, and traversing the full tree for nearest with a simple minimum algorithm" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/KdTree.java</url>
-          <line>449</line>
+          <line>446</line>
           <properties />
           <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/KdTree.java</url>
+          <line>139</line>
+          <properties />
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -570,13 +586,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/KdTreeVisualizer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/result64.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3859">
@@ -598,31 +607,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/KdTree.java">
+    <entry file="file://$PROJECT_DIR$/NearestNeighborVisualizer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="290" column="40" selection-start-line="290" selection-start-column="40" selection-end-line="290" selection-end-column="40" />
+        <state relative-caret-position="425">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/result73.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="776" column="36" selection-start-line="776" selection-start-column="36" selection-end-line="776" selection-end-column="36" />
+        <state relative-caret-position="131">
+          <caret line="640" column="59" selection-start-line="640" selection-start-column="59" selection-end-line="640" selection-end-column="59" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/NearestNeighborVisualizer.java">
+    <entry file="file://$PROJECT_DIR$/KdTreeVisualizer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="31" lean-forward="true" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+        <state relative-caret-position="306">
+          <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/result78.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="499">
+          <caret line="821" column="43" selection-start-line="821" selection-start-column="43" selection-end-line="821" selection-end-column="57" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PointSET.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="100" column="42" selection-start-line="100" selection-start-column="42" selection-end-line="100" selection-end-column="42" />
+        <state relative-caret-position="98">
+          <caret line="31" column="35" lean-forward="true" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/KdTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="469">
+          <caret line="139" selection-start-line="139" selection-end-line="139" />
         </state>
       </provider>
     </entry>

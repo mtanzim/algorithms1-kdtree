@@ -307,16 +307,13 @@ public class KdTree {
 
 
         int cmp = getCmp(curNode, p);
+        curRect = debugCmp(cmp, curNode, parent, curRect);
         if (cmp < 0) {
-            curRect = debugCmp(cmp, curNode, parent, curRect);
             curNode.lb = put(curNode.lb, curNode, p, curRect);
-
         }
         else if (cmp > 0) {
-            curRect = debugCmp(cmp, curNode, parent, curRect);
             curNode.rt = put(curNode.rt, curNode, p, curRect);
         }
-
         // overwrite previously held value
         else {
             if (isDebug) StdOut.println("Overwriting");
