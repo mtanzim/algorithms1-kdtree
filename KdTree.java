@@ -444,7 +444,7 @@ public class KdTree {
     private Point2D nearest(Point2D p, Node curNode, Node prevNode, double curMin,
                             Point2D curChamp) {
 
-        if (size() == 0) return null;
+
         if (curNode == null) return curChamp;
 
         if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
@@ -490,6 +490,7 @@ public class KdTree {
 
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Null point provided");
+        if (size() == 0) throw new IllegalArgumentException("no points provided");
         Point2D nearestPoint = nearest(p, root, null, 10.0, root.p);
         if (isDebug) StdOut.println("\nFinal champion is " + nearestPoint.toString());
         return nearestPoint;
