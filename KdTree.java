@@ -98,7 +98,7 @@ public class KdTree {
 
             }
         }
-        else if (cmp > 0) {
+        else if (cmp >= 0) {
             // if (isDebug) StdOut.println("Going right/top");
             if (getOrientation(curNode.orientation) == "vertical") {
                 if (isDebug) StdOut.println("Going right");
@@ -116,59 +116,9 @@ public class KdTree {
     }
 
 
-    private RectHV debugCmp(int cmp, Node curNode, Node parent, RectHV curRect) {
-        // if (isDebug) StdOut.println(curRect.toString());
-        RectHV newRect = curRect;
-        RectHV outerRect = curRect;
 
 
-        if (isDebug) StdOut.println(
-                "\nCurrently at Node with point: " + curNode.p.toString() + " with orientation "
-                        + getOrientation(curNode.orientation));
-
-
-        if (parent != null) {
-
-            if (isDebug) StdOut.println(
-                    "Parent Node with point: " + parent.p.toString() + " with orientation "
-                            + getOrientation(parent.orientation) + " rectangle " + parent.rect
-                            .toString());
-        }
-
-        if (isDebug) StdOut.println("Starting rectangle is: " + curRect.toString());
-
-        String curDirection = getDirection(cmp, curNode);
-        switch (curDirection) {
-            case "left":
-                newRect = new RectHV(outerRect.xmin(), outerRect.ymin(), curNode.p.x(),
-                                     outerRect.ymax());
-                break;
-            case "right":
-                newRect = new RectHV(curNode.p.x(), outerRect.ymin(),
-                                     outerRect.xmax(),
-                                     outerRect.ymax());
-                break;
-            case "bottom":
-                newRect = new RectHV(outerRect.xmin(), outerRect.ymin(),
-                                     outerRect.xmax(),
-                                     curNode.p.y());
-                break;
-            case "top":
-                newRect = new RectHV(outerRect.xmin(), curNode.p.y(),
-                                     outerRect.xmax(),
-                                     outerRect.ymax());
-                break;
-            default:
-                throw new IllegalArgumentException("Something is wrong!");
-        }
-
-
-        // curRect = newRect;
-        if (isDebug) StdOut.println("New rectangle will be: " + newRect.toString());
-        return newRect;
-    }
-
-    private void debugCmp(int cmp, Node curNode) {
+    /*private void debugCmp(int cmp, Node curNode) {
         if (isDebug) StdOut.println(
                 "Currently at Node with point: " + curNode.p.toString() + " with orientation "
                         + getOrientation(curNode.orientation));
@@ -188,7 +138,7 @@ public class KdTree {
                     if (isDebug) StdOut.println("Going top");
                 }
         }
-    }
+    }*/
 
     // does set contain p?
     public boolean contains(Point2D p) {
@@ -219,12 +169,12 @@ public class KdTree {
         if (curNode == null) return null;
         int cmp = getCmp(curNode, p);
         if (cmp < 0) {
-            debugCmp(cmp, curNode);
+            // debugCmp(cmp, curNode);
             return get(curNode.lb, p);
 
         }
         else if (cmp > 0) {
-            debugCmp(cmp, curNode);
+            // debugCmp(cmp, curNode);
             return get(curNode.rt, p);
         }
         else {
@@ -235,29 +185,64 @@ public class KdTree {
 
     }
 
+    private double[] prepareRect(int cmp, Node curNode, double[] curCoords) {
+        // if (isDebug) StdOut.println(curRect.toString());
+        double[] outerCoords = curCoords;
+        double[] newCoords = outerCoords.clone();
 
-    // add point to the set
-    public void insert(Point2D p) {
-        if (p == null) throw new IllegalArgumentException("calls put() with a null key");
 
-        if (isDebug) StdOut.println("\n\n*** Inserting " + p.toString() + " ***\n");
+        if (isDebug) StdOut.println(
+                "\nCurrently at Node with point: " + curNode.p.toString() + " with orientation "
+                        + getOrientation(curNode.orientation));
 
-        RectHV curRect;
-        if (root == null) curRect = new RectHV(0, 0, p.x(), 1);
-        else curRect = new RectHV(0, 0, 1, 1);
-        if (isDebug) curRect.draw();
-        root = put(root, null, p, curRect);
 
+        if (isDebug) StdOut.println("Starting rectangle is: " + curCoords.toString());
+
+        String curDirection = getDirection(cmp, curNode);
+        switch (curDirection) {
+            case "left":
+                /*newRect = new RectHV(outerRect.xmin(), outerRect.ymin(), curNode.p.x(),
+                                     outerRect.ymax());*/
+
+                newCoords[2] = curNode.p.x();
+                break;
+            case "right":
+                /*newRect = new RectHV(curNode.p.x(), outerRect.ymin(),
+                                     outerRect.xmax(),
+                                     outerRect.ymax())*/
+                newCoords[0] = curNode.p.x();
+                break;
+            case "bottom":
+                /*newRect = new RectHV(outerRect.xmin(), outerRect.ymin(),
+                                     outerRect.xmax(),
+                                     curNode.p.y());*/
+
+                newCoords[3] = curNode.p.y();
+                break;
+            case "top":
+                /*newRect = new RectHV(outerRect.xmin(), curNode.p.y(),
+                                     outerRect.xmax(),
+                                     outerRect.ymax());*/
+                newCoords[1] = curNode.p.y();
+                break;
+            default:
+                throw new IllegalArgumentException("Something is wrong!");
+        }
+
+
+        // curRect = newRect;
+        if (isDebug) StdOut.println("New rectangle will be: " + newCoords.toString());
+        return newCoords;
     }
 
-    private Node put(Node curNode, Node parent, Point2D p, RectHV curRect) {
-        // curRect.draw();
+
+    private Node put(Node curNode, Node parent, Point2D p, double[] curCoords) {
         // found where to insert
         if (curNode == null) {
+
             Node newNode;
+            // RectHV newRect;
             boolean newOrientation;
-            RectHV lt;
-            RectHV gt;
             size++;
 
             // when tree is empty
@@ -269,22 +254,37 @@ public class KdTree {
             }
 
             if (parent != null && getOrientation(newOrientation) == "horizontal") {
-                double y_min = Math.min(p.y(), curRect.ymin());
-                double y_max = Math.min(p.y(), curRect.ymax());
+                // double y_min = Math.min(p.y(), curRect.ymin());
+                // double y_max = Math.min(p.y(), curRect.ymax());
+                double y_min = Math.min(p.y(), curCoords[1]);
+                double y_max = Math.min(p.y(), curCoords[3]);
 
-                curRect = new RectHV(curRect.xmin(), y_min, curRect.xmax(),
-                                     y_max);
+                // curRect = new RectHV(curRect.xmin(), y_min, curRect.xmax(),
+                //                      y_max);
+
+                curCoords[1] = y_min;
+                curCoords[3] = y_max;
+
             }
 
 
             if (parent != null && getOrientation(newOrientation) == "vertical") {
-                double x_min = Math.min(p.x(), curRect.xmin());
-                double x_max = Math.min(p.x(), curRect.xmax());
-                curRect = new RectHV(x_min, curRect.ymin(), x_max,
-                                     curRect.ymax());
+                // double x_min = Math.min(p.x(), curRect.xmin());
+                // double x_max = Math.min(p.x(), curRect.xmax());
+
+                double x_min = Math.min(p.x(), curCoords[0]);
+                double x_max = Math.min(p.x(), curCoords[2]);
+
+
+                // curRect = new RectHV(x_min, curRect.ymin(), x_max,
+                //                      curRect.ymax());
+
+                curCoords[0] = x_min;
+                curCoords[2] = x_max;
             }
 
-            newNode = new Node(p, newOrientation, curRect);
+            newNode = new Node(p, newOrientation,
+                               new RectHV(curCoords[0], curCoords[1], curCoords[2], curCoords[3]));
 
             // if (isDebug) StdOut.println(curRect);
             // reverse orientation from parent
@@ -307,21 +307,36 @@ public class KdTree {
 
 
         int cmp = getCmp(curNode, p);
-        curRect = debugCmp(cmp, curNode, parent, curRect);
+        curCoords = prepareRect(cmp, curNode, curCoords);
         if (cmp < 0) {
-            curNode.lb = put(curNode.lb, curNode, p, curRect);
+            curNode.lb = put(curNode.lb, curNode, p, curCoords);
         }
         else if (cmp > 0) {
-            curNode.rt = put(curNode.rt, curNode, p, curRect);
+            curNode.rt = put(curNode.rt, curNode, p, curCoords);
         }
         // overwrite previously held value
         else {
             if (isDebug) StdOut.println("Overwriting");
             curNode.p = p;
         }
-
         return curNode;
     }
+
+    // add point to the set
+    public void insert(Point2D p) {
+        if (p == null) throw new IllegalArgumentException("calls put() with a null key");
+
+        if (isDebug) StdOut.println("\n\n*** Inserting " + p.toString() + " ***\n");
+
+        double[] curCoords = { 0, 0, 1, 1 };
+
+        // parent implementation
+        if (root == null) curCoords[2] = p.x();
+        // if (isDebug) curRect.draw();
+        root = put(root, null, p, curCoords);
+
+    }
+
 
     private void inorder(Node curNode) {
         if (curNode == null) return;
@@ -424,6 +439,7 @@ public class KdTree {
         if (isDebug) StdDraw.setPenColor(Color.GREEN);
         if (isDebug) rect.draw();
         Queue<Point2D> q = new Queue<Point2D>();
+        if (isEmpty()) return q;
         range(root, q, rect);
         if (isDebug) StdOut.println("Done traversal");
         if (isDebug) StdOut.println("Following points in rect");
@@ -443,6 +459,8 @@ public class KdTree {
 
 
         if (curNode == null) return curChamp;
+        if (isEmpty()) return null;
+
 
         if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
 

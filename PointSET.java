@@ -69,7 +69,8 @@ public class PointSET {
 
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Null p");
-        if (isEmpty()) throw new IllegalArgumentException("Empty set");
+        // if (isEmpty()) throw new IllegalArgumentException("Empty set");
+        if (isEmpty()) return null;
 
         /*class Node implements Comparable<Node> {
             private Point2D myCurP;
