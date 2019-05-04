@@ -61,24 +61,22 @@ public class KdTree {
 
 
     private int getCmp(Node curNode, Point2D p) {
-        int cmp;
         // if true/vertical
         if (curNode.orientation) {
-            cmp = Point2D.X_ORDER.compare(p, curNode.p);
-            if (cmp == 0) {
-                cmp = Point2D.Y_ORDER.compare(p, curNode.p);
-
-            }
+            if (p.x() < curNode.p.x()) return -1;
+            if (p.x() > curNode.p.x()) return 1;
+            if (p.y() < curNode.p.y()) return -1;
+            if (p.y() > curNode.p.y()) return 1;
+            return 0;
         }
         // false/horizontal
         else {
-            cmp = Point2D.Y_ORDER.compare(p, curNode.p);
-            if (cmp == 0) {
-                cmp = Point2D.X_ORDER.compare(p, curNode.p);
-
-            }
+            if (p.y() < curNode.p.y()) return -1;
+            if (p.y() > curNode.p.y()) return 1;
+            if (p.x() < curNode.p.x()) return -1;
+            if (p.x() > curNode.p.x()) return 1;
+            return 0;
         }
-        return cmp;
     }
 
     private String getOrientation(boolean cond) {
@@ -201,34 +199,20 @@ public class KdTree {
         String curDirection = getDirection(cmp, curNode);
         switch (curDirection) {
             case "left":
-                /*newRect = new RectHV(outerRect.xmin(), outerRect.ymin(), curNode.p.x(),
-                                     outerRect.ymax());*/
-
                 newCoords[2] = curNode.p.x();
                 break;
             case "right":
-                /*newRect = new RectHV(curNode.p.x(), outerRect.ymin(),
-                                     outerRect.xmax(),
-                                     outerRect.ymax())*/
                 newCoords[0] = curNode.p.x();
                 break;
             case "bottom":
-                /*newRect = new RectHV(outerRect.xmin(), outerRect.ymin(),
-                                     outerRect.xmax(),
-                                     curNode.p.y());*/
-
                 newCoords[3] = curNode.p.y();
                 break;
             case "top":
-                /*newRect = new RectHV(outerRect.xmin(), curNode.p.y(),
-                                     outerRect.xmax(),
-                                     outerRect.ymax());*/
                 newCoords[1] = curNode.p.y();
                 break;
             default:
                 throw new IllegalArgumentException("Something is wrong!");
         }
-
 
         // curRect = newRect;
         if (isDebug) StdOut.println("New rectangle will be: " + newCoords.toString());
@@ -239,55 +223,30 @@ public class KdTree {
     private Node put(Node curNode, Node parent, Point2D p, double[] curCoords) {
         // found where to insert
         if (curNode == null) {
-
             Node newNode;
-            // RectHV newRect;
             boolean newOrientation;
-            size++;
 
             // when tree is empty
             if (parent != null) {
                 newOrientation = !parent.orientation;
+                if (getOrientation(newOrientation) == "horizontal") {
+                    curCoords[1] = Math.min(p.y(), curCoords[1]);
+                    curCoords[3] = Math.min(p.y(), curCoords[3]);
+                }
+                else if (getOrientation(newOrientation) == "vertical") {
+                    curCoords[0] = Math.min(p.x(), curCoords[0]);
+                    curCoords[2] = Math.min(p.x(), curCoords[2]);
+                }
             }
             else {
                 newOrientation = ROOT_ORIENTATION;
             }
 
-            if (parent != null && getOrientation(newOrientation) == "horizontal") {
-                // double y_min = Math.min(p.y(), curRect.ymin());
-                // double y_max = Math.min(p.y(), curRect.ymax());
-                double y_min = Math.min(p.y(), curCoords[1]);
-                double y_max = Math.min(p.y(), curCoords[3]);
-
-                // curRect = new RectHV(curRect.xmin(), y_min, curRect.xmax(),
-                //                      y_max);
-
-                curCoords[1] = y_min;
-                curCoords[3] = y_max;
-
-            }
-
-
-            if (parent != null && getOrientation(newOrientation) == "vertical") {
-                // double x_min = Math.min(p.x(), curRect.xmin());
-                // double x_max = Math.min(p.x(), curRect.xmax());
-
-                double x_min = Math.min(p.x(), curCoords[0]);
-                double x_max = Math.min(p.x(), curCoords[2]);
-
-
-                // curRect = new RectHV(x_min, curRect.ymin(), x_max,
-                //                      curRect.ymax());
-
-                curCoords[0] = x_min;
-                curCoords[2] = x_max;
-            }
 
             newNode = new Node(p, newOrientation,
                                new RectHV(curCoords[0], curCoords[1], curCoords[2], curCoords[3]));
 
             // if (isDebug) StdOut.println(curRect);
-            // reverse orientation from parent
             if (isDebug) StdOut.println(
                     "\n=== Inserted " + newNode.p.toString() + " to tree" + " with orientation "
                             + getOrientation(newNode.orientation) + " and rectangle: "
@@ -300,8 +259,7 @@ public class KdTree {
             StdDraw.setPenColor(Color.RED);
             StdDraw.setPenRadius(0.02);
             newNode.p.draw();*/
-
-
+            size++;
             return newNode;
         }
 
@@ -325,16 +283,10 @@ public class KdTree {
     // add point to the set
     public void insert(Point2D p) {
         if (p == null) throw new IllegalArgumentException("calls put() with a null key");
-
         if (isDebug) StdOut.println("\n\n*** Inserting " + p.toString() + " ***\n");
-
         double[] curCoords = { 0, 0, 1, 1 };
-
-        // parent implementation
         if (root == null) curCoords[2] = p.x();
-        // if (isDebug) curRect.draw();
         root = put(root, null, p, curCoords);
-
     }
 
 
@@ -348,13 +300,11 @@ public class KdTree {
         StdDraw.setPenColor(Color.BLACK);
         curNode.rect.draw();
         inorder(curNode.rt);
-
     }
 
 
     public void draw() {
         inorder(root);
-
     }
 
     private void range(Node curNode, Queue<Point2D> q, RectHV rect) {
@@ -422,45 +372,23 @@ public class KdTree {
             range(curNode.rt, q, rect);
         }
 
-
-        // range(curNode.lb, q, rect);
-        // if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
-        // range(curNode.rt, q, rect);
-
-        // if (isDebug) StdOut.println("Finished Traversing points for range ");
-
-
     }
 
 
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new IllegalArgumentException("Null data to range!");
-        if (isDebug) StdDraw.setPenRadius(0.002);
-        if (isDebug) StdDraw.setPenColor(Color.GREEN);
-        if (isDebug) rect.draw();
         Queue<Point2D> q = new Queue<Point2D>();
         if (isEmpty()) return q;
         range(root, q, rect);
-        if (isDebug) StdOut.println("Done traversal");
-        if (isDebug) StdOut.println("Following points in rect");
-        if (isDebug) StdDraw.setPenRadius(0.025);
-        for (Point2D curP : q) {
-            if (isDebug) StdOut.println(curP.toString());
-            if (isDebug) curP.draw();
-        }
         return q;
-
-
     }
 
-    //test inorder first by traversing all points
     private Point2D nearest(Point2D p, Node curNode, Node prevNode, double curMin,
                             Point2D curChamp) {
 
 
         if (curNode == null) return curChamp;
         if (isEmpty()) return null;
-
 
         if (isDebug) StdOut.println("Traversing point " + curNode.p.toString());
 
@@ -505,11 +433,10 @@ public class KdTree {
 
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("Null point provided");
-        if (size() == 0) throw new IllegalArgumentException("no points provided");
+        if (isEmpty()) return null;
         Point2D nearestPoint = nearest(p, root, null, 10.0, root.p);
         if (isDebug) StdOut.println("\nFinal champion is " + nearestPoint.toString());
         return nearestPoint;
-        // return new Point2D(0, 0);
     }
 
     public static void main(String[] args) {
